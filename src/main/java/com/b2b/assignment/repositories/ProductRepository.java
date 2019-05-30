@@ -17,8 +17,11 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
     /**
      * Search By Either title or description
      *
-     * @param query
+     * The famous spring data jpa issue for using OR (expects 2 queries passed)
+     *
+     * @param titleQuery
+     * @param descriptionQuery
      * @return a list of products
      */
-    List<Product> findByTitleIgnoreCaseContainingOrDescriptionIgnoreCaseContaining(String query, String query2);
+    List<Product> findByTitleIgnoreCaseContainingOrDescriptionIgnoreCaseContaining(String titleQuery, String descriptionQuery);
 }

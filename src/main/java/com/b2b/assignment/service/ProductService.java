@@ -72,6 +72,7 @@ public class ProductService {
    */
   @Transactional(readOnly = true)
   public List<Product> search(String query) {
+    // Passing the query 2 times, one for title and the other for description to handle spring data jpa OR issue
     return productRepository.findByTitleIgnoreCaseContainingOrDescriptionIgnoreCaseContaining(query, query);
   }
 
