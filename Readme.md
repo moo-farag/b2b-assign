@@ -20,3 +20,32 @@ Application exposing RESTful APIs for carrying out CRUD operations for Product m
 * Checkout the project (master branch is used)
 * Import it in your favorite IDE (personally prefer IntelliJ) as a gradle project.
 * Make sure you have Mysql 5.7+
+
+# Docker
+
+You can use Docker. A number of docker-compose configuration are available in the [src/main/docker](src/main/docker) folder to launch required third party services.
+
+To Build docker image for the first time (attached):
+
+    docker-compose -f src/main/docker/mysql.yml up --build
+
+To Start docker image without sudo:
+
+    sudo chmod 777 /var/run/docker.sock
+
+For example, to start a mysql database in a docker container, run (mysql service must be stopped first):
+
+    docker-compose -f src/main/docker/mysql.yml up -d
+
+To stop it and remove the container, run:
+
+    docker-compose -f src/main/docker/mysql.yml down
+
+You can also fully dockerize your application and all the services that it depends on.
+To achieve this, first build a docker image of your app by running:
+
+    ./gradlew bootWar buildDocker
+
+Then run:
+
+    docker-compose -f src/main/docker/app.yml up -d

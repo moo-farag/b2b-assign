@@ -1,0 +1,10 @@
+version: '2'
+services:
+    b2b_assign-app:
+        image: b2b_assign
+        ports:
+            - 8080:8080
+    b2b_assign-mysql:
+        extends:
+            file: mysql.yml
+            service: b2b_assign-mysql
