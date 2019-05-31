@@ -49,3 +49,7 @@ To achieve this, first build a docker image of your app by running:
 Then run:
 
     docker-compose -f src/main/docker/app.yml up -d
+
+Question regarding deployment on AWS
+
+    ElasticBeanstalk with EC2 and RDS or Deploy the docker img to ECS ?
