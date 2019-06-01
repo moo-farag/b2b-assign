@@ -37,11 +37,6 @@ repositories {
     mavenCentral()
 }
 
-configurations {
-	providedRuntime
-	compile.exclude module: "spring-boot-starter-tomcat"
-}
-
 dependencies {
     compile('org.springframework.boot:spring-boot-starter')
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
@@ -96,5 +91,14 @@ task buildDocker(type: DockerBuildImage, dependsOn: 'copyDockerFiles') {
 	description = "Package application as Docker image"
 	group = "Docker"
 	inputDir = project.file("${project.buildDir}/docker")
-//	tags = ["app:latest".toString(), "app:${project.version}".toString()]
+}
+
+def props = new Properties()
+file("deploy.properties").withInputStream { props.load(it) }
+
+task deployOnServer(type:Exec, dependsOn: 'build') {
+	def ssh = props.getProperty('ssh.key')
+	def deploy = "deploy-b2bfg-server.sh"
+	executable "bash"
+	args "-c", "sh ${deploy} ${ssh}"
 }

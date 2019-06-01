@@ -21,6 +21,16 @@ Application exposing RESTful APIs for carrying out CRUD operations for Product m
 * Import it in your favorite IDE (personally prefer IntelliJ) as a gradle project.
 * Make sure you have Mysql 5.7+
 
+# Deployment
+
+You will need to update deploy.properties file first with your ssh args (assuming your public key is placed on the server), which will be used in the update process of the server (must be a sudoer on the server)
+
+    ssh.key=root@127.0.0.1
+
+To update server:
+
+    ./gradlew clean deployOnServer
+
 # Docker
 
 You can use Docker. A number of docker-compose configuration are available in the [src/main/docker](src/main/docker) folder to launch required third party services.
