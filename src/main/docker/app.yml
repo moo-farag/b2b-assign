@@ -1,7 +1,7 @@
 version: '2'
 services:
     b2b_assign-app:
-        image: b2b_assign
+        image: b2b-assign-app
         ports:
             - 8080:8080
     b2b_assign-mysql:

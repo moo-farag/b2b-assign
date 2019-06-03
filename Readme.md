@@ -1,5 +1,5 @@
 
-# B2B Product Assignment
+# B2BFG Product
 
 Application exposing RESTful APIs for carrying out CRUD operations for Product model and RESTful APIs for searching Products by title or description.
 
@@ -52,13 +52,17 @@ To stop it and remove the container, run:
     docker-compose -f src/main/docker/mysql.yml down
 
 You can also fully dockerize your application and all the services that it depends on.
-To achieve this, first build a docker image of your app by running:
+To achieve this, first build a docker image of your app by running (this will build to a docker daemon):
 
-    ./gradlew bootWar buildDocker
+    ./gradlew jibDockerBuild
 
 Then run:
 
-    docker-compose -f src/main/docker/app.yml up -d
+    docker run -p 8080:8080/tcp b2b-assign-app:0.0.1-SNAPSHOT
+
+To build to container image registry:
+
+    ./gradlew jib --image=b2b-assign-app:latest
 
 Question regarding deployment on AWS
 

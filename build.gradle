@@ -1,4 +1,3 @@
-apply plugin: 'com.bmuschko.docker-remote-api'
 buildscript {
 	ext {
 		springBootVersion = '2.0.2.RELEASE'
@@ -9,11 +8,13 @@ buildscript {
 		jcenter()
         maven { url "http://repo.spring.io/plugins-release" }
         maven { url "https://plugins.gradle.org/m2/" }
+		maven { url "https://repo.spring.io/snapshot" }
+		maven { url "https://repo.spring.io/milestone" }
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
 		classpath('com.github.ksoichiro:gradle-console-reporter:0.5.0')
-		classpath 'com.bmuschko:gradle-docker-plugin:2.6.8'
+		classpath("gradle.plugin.com.google.cloud.tools:jib-gradle-plugin:1.2.0")
 	}
 }
 
@@ -29,6 +30,7 @@ apply plugin: 'war'
 apply plugin: 'maven'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'idea'
+apply plugin: 'com.google.cloud.tools.jib'
 
 group = 'com.b2b'
 version = '0.0.1-SNAPSHOT'
@@ -55,8 +57,6 @@ dependencies {
 	
 }
 
-
-
 defaultTasks 'bootRun'
 
 group = 'com.b2b.assignment'
@@ -77,20 +77,16 @@ springBoot {
 	buildInfo()
 }
 
-import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
-task copyDockerFiles(type: Copy) {
-	description = "Copy Dockerfile and required data to build directory"
-	from 'src/main/docker'
-	from "${project.buildDir}/libs"
-	into { "${project.buildDir}/docker" }
-	include "*"
-	exclude "**/*.yml"
-}
-
-task buildDocker(type: DockerBuildImage, dependsOn: 'copyDockerFiles') {
-	description = "Package application as Docker image"
-	group = "Docker"
-	inputDir = project.file("${project.buildDir}/docker")
+jib {
+	to {
+		image = "b2b-assign-app:latest"
+	}
+	container {
+		jvmFlags = ['-Xms512m', '-Xdebug']
+		mainClass = 'com.b2b.assignment.B2bFoodGroupApplication'
+		args = []
+		ports = ['8080/tcp']
+	}
 }
 
 def props = new Properties()
